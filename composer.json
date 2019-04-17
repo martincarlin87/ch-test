@@ -1,0 +1,16 @@
+{
+    "name": "m.carlin/ch-test",
+    "description": "CH Technical Test",
+    "authors": [
+        {
+            "name": "Martin Carlin",
+            "email": "martin@martincarlin.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+        	"Models\\": "src/Models"
+        }
+    },
+    "require": {}
+}

@@ -1,0 +1,16 @@
+# should probably be in global .gitignore
+.DS_Store
+
+# Logs
+logs
+*.log
+
+# Optional npm cache directory
+.npm
+
+# Dependency directories
+node_modules/
+
+# Compiled release files
+build/*
+/vendor/
