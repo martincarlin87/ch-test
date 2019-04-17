@@ -53,7 +53,7 @@ class WindTurbine
 
 	public function removeItemByValue(string $value) : void
 	{
-		$key = array_search($value, $this->items))
+		$key = array_search($value, $this->items);
 
 		$this->removeItemByKey($key);
 	}
@@ -69,28 +69,37 @@ class WindTurbine
 
 	private function getMaxItemsProduct() : int
 	{
-		$product = array_sum(array_keys($this->items));
+		$keys = array_keys($this->items);
+		
+		$product = array_reduce($keys, array($this, "getProduct"), 1);
 
 		return $product;
 	}
 
+	private function getProduct(int $carry, int $item) : int
+	{
+		$carry *= $item;
+        return $carry;
+	}
+
 	private function getConcatenatedKeys() : string
 	{
-		$values = array_values($this->items);
+		$values = array_values($this->getItems());
 
 		// remove last value from the array so that we can prefix it with 'and' if appropriate
-		$last = array_pop($value);
+		$last = array_pop($values);
 		
-		$sentence = count($values) > 1 ? implode(', ', $values) . ' and ' . $last : $last;
+		$sentence = count($values) > 0 ? implode(', ', $values) . ' and ' . $last : $last;
 
 		return $sentence;
 	}
 
-	private function getItemLabel(int $i)] : string
+	private function getItemLabel(int $i) : string
 	{
 		// cache these values in variables to prevent looking them up every single time
 		$product = $this->getMaxItemsProduct();
 		$concatenatedKeys = $this->getConcatenatedKeys();
+		$items = $this->getItems();
 		$keys = array_keys($items);
 		
 		if ($i % $product === 0) {
@@ -99,18 +108,21 @@ class WindTurbine
 		} else {
 			// otherwise see if any of the array keys are divisible and return the first
 			foreach ($keys as $key) {
-				if ($i % $key) {
-					return $this->items[$key];
-				} else {
-					// return the current item we are processing
+				if ($i % $key === 0) {
+					// $i divisible by current key, return the label for this key
+					return $items[$key];
+				} elseif ($key === end($keys)) {
+					// no matches, return the current item we are processing
 					return strval($i);
 				}
 			}
 		} 
 	}
 
-	private function getOutput() : array
+	public function getOutput() : array
 	{
+		$this->checkItems();
+
 		return $this->output;
 	}
 }

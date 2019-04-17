@@ -1,0 +1,102 @@
+@tailwind preflight;
+
+/* Here we can add any custom overrides */
+
+@tailwind utilities;
+
+.turbine {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: repeat(1, 1fr); /* one row, one column */
+  grid-template-rows: repeat(1, 1fr); /* one row, one column */
+  
+  height: 100%;
+  width: 100%;
+
+  position: relative;
+  top: -31px;
+}
+
+.pole, .pilot {
+  grid-row:1;
+  grid-column: 1;
+}
+
+.pole {
+  position: relative;
+  display: block;
+  align-self: end;
+  background-color: dimgrey;  
+  height: 50px;
+  width: 10px;
+  top: 30px;
+  border-radius: 5px 5px 0 0;
+  z-index: 0;
+}
+
+.pilot {
+  position: relative;
+  z-index: 1;
+}
+
+.pilot:after { 
+  /* This is the central circle */
+  content: '';
+  display: block;
+  
+  position: absolute;
+  top: 40px;
+  left: -6px;
+  z-index: 1;
+  
+  height: 27px;
+  width: 27px;
+  border: 4px solid darkgrey;
+  border-radius: 50%;
+  
+  /*Usually present in a reset sheet*/
+  box-sizing: border-box;
+}
+
+.pilot:after, .pilot .prop {
+  background-color: slategrey;
+}
+
+.pilot .prop-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* one row, one column */
+  align-items: center;
+  justify-items: center;
+  animation: propeller 1.5s infinite linear; /*linear stops it from spinning irregularly*/
+  transform-origin: 7px 53px; /* the origin of the spin should be bottom side, middle of the overall rectangle*/
+}
+
+.pilot .prop {
+  height: 50px;
+  width: 14px;
+  border-radius: 50%;
+  grid-column: 1;
+  grid-row:1; /*Stack the propellers on top of each other*/
+  transform-origin: 50% 50%; /*Transform the propeller about its centre */
+}
+  
+/* The the rotateZ rotates the propeller direction, the following transforms rotate around a point of a circle */
+.prop:first-child {
+  transform: rotate(360deg) translate(0px) rotate(-360deg);
+}
+
+.prop:nth-child(2) {
+  transform: rotateZ(120deg) rotate(120deg) translate(-50px) rotate(-120deg);
+}
+
+.prop:last-child {
+  transform: rotateZ(240deg) rotate(240deg) translate(50px) rotate(-240deg);
+}
+
+
+@keyframes propeller {
+  to {
+    transform: rotateZ(360deg);
+  }
+}

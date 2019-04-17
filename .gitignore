@@ -13,4 +13,6 @@ node_modules/
 
 # Compiled release files
 build/*
+
+# Composer
 /vendor/

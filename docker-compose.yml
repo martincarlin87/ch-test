@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+
+  php:
+    container_name: ch
+    build:
+      context: ./
+      dockerfile: php.dockerfile
+    volumes:
+      - ./webroot:/var/www/html
+    restart: always
+    ports:
+      - 80:80
