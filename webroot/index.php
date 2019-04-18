@@ -33,12 +33,17 @@ $output = $windTurbine->getOutput();
       <div class="border-b">
         <div class="flex justify-between px-6 -mb-px">
           <div class="w-2/3">
-            <h3 class="text-2xl text-white font-semibold py-4">
+            <h3 class="text-2xl text-white font-semibold pt-4 pb-2">
               Wind Turbine
-              <span class="text-sm text-blue-lighter">
+              <span class="text-sm text-blue-lighter item-count">
                 <?php echo sprintf("%d item%s", count($output), count($output) === 1 ? '' : 's') ?>
               </span>
             </h3>
+            <div class="mb-2">
+              <button data-filter="empty" class="bg-indigo-dark hover:bg-indigo text-grey-lightest font-bold py-2 px-4 rounded text-xs mr-2 mt-2">Show Empty</button>
+              <button data-filter="matches" class="bg-indigo-dark hover:bg-indigo text-grey-lightest font-bold py-2 px-4 rounded text-xs mr-2 mt-2">Show Matches</button>
+              <button data-filter="all" class="bg-indigo-dark hover:bg-indigo text-grey-lightest font-bold py-2 px-4 rounded text-xs mt-2 cursor-not-allowed opacity-50">Show All</button>
+            </div>
           </div>
           <div class="w-1/3">
             <div class="turbine">
@@ -56,10 +61,11 @@ $output = $windTurbine->getOutput();
       </div>
       <div>
         <div class="px-6 py-2 text-blue-lighter mb-4">
-          <ol class="mt-2">
+          <ol class="mt-2 list-reset">
             <? foreach ($output as $index => $label) { ?>
               <li class="mb-2">
-                <span class="text-grey-light">
+                <span class="pr-2"><? echo $index; ?>.</span>
+                <span class="text-grey-light result">
                   <? echo ($index == $label) ? '-' : $label; ?>
                 </span>
               </li>
@@ -72,6 +78,7 @@ $output = $windTurbine->getOutput();
 
   <script src="js/vendor/modernizr-3.7.1.min.js"></script>
   <script src="js/plugins.js"></script>
+  <script src="js/app.js"></script>
 
 </body>
 

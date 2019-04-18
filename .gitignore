@@ -9,10 +9,7 @@ logs
 .npm
 
 # Dependency directories
-node_modules/
-
-# Compiled release files
-build/*
+/webroot/node_modules/
 
 # Composer
-/vendor/
+/webroot/vendor/*
