@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Models;
 
 class WindTurbine
@@ -41,7 +43,8 @@ class WindTurbine
 
 	public function addItem(array $item) : void
 	{
-		$this->items[] = $item;
+		$key = key($item);
+		$this->items[$key] = $item[$key];
 	}
 
 	public function removeItemByKey(int $key) : void
@@ -67,7 +70,7 @@ class WindTurbine
 		}
 	}
 
-	private function getMaxItemsProduct() : int
+	public function getMaxItemsProduct() : int
 	{
 		$keys = array_keys($this->items);
 		
@@ -82,7 +85,7 @@ class WindTurbine
         return $carry;
 	}
 
-	private function getConcatenatedKeys() : string
+	public function getConcatenatedValues() : string
 	{
 		$values = array_values($this->getItems());
 
@@ -94,17 +97,17 @@ class WindTurbine
 		return $sentence;
 	}
 
-	private function getItemLabel(int $i) : string
+	public function getItemLabel(int $i) : string
 	{
 		// cache these values in variables to prevent looking them up every single time
 		$product = $this->getMaxItemsProduct();
-		$concatenatedKeys = $this->getConcatenatedKeys();
+		$concatenatedValues = $this->getConcatenatedValues();
 		$items = $this->getItems();
 		$keys = array_keys($items);
 		
 		if ($i % $product === 0) {
 			// check if the integer is divisible by all keys of the $items array
-			return $concatenatedKeys;
+			return $concatenatedValues;
 		} else {
 			// otherwise see if any of the array keys are divisible and return the first
 			foreach ($keys as $key) {
