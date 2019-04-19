@@ -1,0 +1,34 @@
+image: centos:7
+
+stages:
+    - deploy
+
+before_script:
+    - yum install which -y
+    # install ssh-agent if not already installed, it is required by docker
+    - 'which ssh-agent || ( yum install openssh-clients -y )'
+    # run ssh-agent (inside the build environment)
+    - eval $(ssh-agent -s)
+    # add the ssh key stored in SSH_PRIVATE_KEY variable to the agent store
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    # for docker builds disable host key checking although this can lead to
+    # mitm attacks; only use this in docker or it will overwrite the host
+    # ssh config!
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - yum install rsync -y
+
+production:
+    stage: deploy
+    script:
+        - ssh -t martin@$CI_DEPLOY_IP
+        - mkdir -p /srv/www/ch.martincarlin.uk
+        - rsync -rav -O -e ssh --exclude='.git/' --exclude='.gitignore' --exclude='.gitlab-ci.yml' ./ martin@$CI_DEPLOY_IP:/srv/www/ch.martincarlin.uk
+        - ssh -t martin@$CI_DEPLOY_IP "cd /srv/www/ch.martincarlin.uk && docker-compose up -d --build --force-recreate"
+        - ssh -t martin@$CI_DEPLOY_IP "sudo find /srv/www/ch.martincarlin.uk -type d -exec chmod 755 {} +"
+        - ssh -t martin@$CI_DEPLOY_IP "sudo find /srv/www/ch.martincarlin.uk -type f -exec chmod 644 {} +"
+        - ssh -t martin@$CI_DEPLOY_IP "sudo chmod 755 /srv/www/ch.martincarlin.uk"
+        - ssh -t martin@$CI_DEPLOY_IP "sudo chown -R martin:martin /srv/www/ch.martincarlin.uk"
+        - ssh -t martin@$CI_DEPLOY_IP "cd /srv/www/ch.martincarlin.uk/webroot && docker run -t --rm -v $(pwd):/app -w=/app composer/composer:latest dumpautoload -o"
+    only:
+        - master
