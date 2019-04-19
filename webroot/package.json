@@ -5,10 +5,14 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
+    "@fullhuman/postcss-purgecss": "^1.1.0",
+    "cssnano": "^4.1.10",
+    "postcss-import": "^12.0.1",
     "tailwindcss": "^0.7.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "postcss css/tailwind.css -o css/styles.css"
   },
   "repository": {
     "type": "git",
