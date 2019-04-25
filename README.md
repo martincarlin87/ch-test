@@ -1,5 +1,5 @@
 # ch-test
-Technical Test
+Technical Test. The application is available to view at [https://ch.martincarlin.uk/](https://ch.martincarlin.uk/).
 
 ### Installation and Setup
 
