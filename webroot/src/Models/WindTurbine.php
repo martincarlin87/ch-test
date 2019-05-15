@@ -12,8 +12,8 @@ class WindTurbine
 	private $output;
 
 	private $items = [
-       3 => "Coating Damage",
-       5 => "Lightning Strike",
+		3 => "Coating Damage",
+		5 => "Lightning Strike",
 	];
 
 	public function getStart() : int
@@ -66,7 +66,7 @@ class WindTurbine
 		$this->output = [];
 
 		foreach (range($this->start, $this->end) as $i) {
-    		$this->output[$i] = $this->getItemLabel($i);
+			$this->output[$i] = $this->getItemLabel($i);
 		}
 	}
 
@@ -82,7 +82,7 @@ class WindTurbine
 	private function getProduct(int $carry, int $item) : int
 	{
 		$carry *= $item;
-        return $carry;
+		return $carry;
 	}
 
 	public function getConcatenatedValues() : string
